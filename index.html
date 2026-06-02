@@ -1,0 +1,760 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Simran's Birthday Countdown....</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#ff9ec7;
+  --rose:#f7c6b6;
+  --lav:#d9c2ff;
+  --cream:#fff8f2;
+  --gold:#ffd36b;
+  --dark:#5b2d4f;
+  --glass:rgba(255,255,255,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:Poppins,sans-serif;
+  background:linear-gradient(135deg,#120814,#1b1025,#2b1537,#160b1f);
+  color:#ffffff;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background:
+    radial-gradient(circle at top left, rgba(255,105,180,.18), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(255,192,203,.12), transparent 35%),
+    radial-gradient(circle at center, rgba(255,255,255,.04), transparent 40%);
+  z-index:-2;
+}
+.floating{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:-1;
+}
+.heart{
+  position:absolute;
+  animation:floatUp linear infinite;
+  opacity:.7;
+}
+@keyframes floatUp{
+  from{transform:translateY(100vh) scale(.5);opacity:0}
+  20%{opacity:1}
+  to{transform:translateY(-120vh) scale(1.2);opacity:0}
+}
+.loader{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#1c1028,#2b1438,#3d184f);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:9999;
+  transition:.8s;
+}
+.loader h1{
+  font-family:"Great Vibes",cursive;
+  font-size:3rem;
+  color:#ffffff;
+  margin-top:20px;
+}
+.bear{
+  font-size:5rem;
+  animation:bounce 1.5s infinite;
+}
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-20px)}
+}
+.container{
+  width:min(1200px,92%);
+  margin:auto;
+  padding:40px 0 120px;
+}
+.hero{
+  text-align:center;
+  padding-top:80px;
+}
+.hero h1{
+  font-family:"Great Vibes",cursive;
+  font-size:clamp(3rem,8vw,6rem);
+  color:#ffffff;
+  text-shadow:0 0 30px rgba(255,192,203,.6), 0 0 60px rgba(255,255,255,.25);
+}
+.hero p{
+  color:#ffffff;
+  margin-top:10px;
+  font-size:1.05rem;
+  text-shadow:0 0 10px rgba(0,0,0,.5);
+}
+.glass{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.25);
+  backdrop-filter:blur(14px);
+  border-radius:30px;
+  box-shadow:0 20px 50px rgba(0,0,0,.45);
+}
+.countdown{
+  margin-top:40px;
+  padding:35px;
+}
+.timer{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+.time-box{
+  padding:25px 10px;
+  border-radius:24px;
+  background:rgba(255,255,255,.10);
+}
+.time-box h2{
+  color:#ffffff;
+  text-shadow:0 0 18px rgba(255,255,255,.35);
+  font-size:clamp(2rem,5vw,4rem);
+}
+.progress-wrap{
+  margin-top:30px;
+}
+.progress-bar{
+  width:100%;
+  height:22px;
+  background:rgba(255,255,255,.10);
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:15px;
+}
+.progress{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--pink),var(--rose),var(--gold));
+  border-radius:999px;
+  transition:1s;
+  position:relative;
+}
+.progress::after{
+  content:"✨";
+  position:absolute;
+  right:10px;
+  top:-4px;
+}
+.section-title{
+  margin:50px 0 20px;
+  font-size:2rem;
+  text-align:center;
+}
+.gifts{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:20px;
+}
+.gift{
+  position:relative;
+  aspect-ratio:1/1;
+  border-radius:28px;
+  cursor:pointer;
+  overflow:hidden;
+  transition:.35s;
+  border:2px solid rgba(255,255,255,.2);
+  background:linear-gradient(135deg,#ff5ea8,#7f5cff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  text-align:center;
+}
+.gift:hover{transform:translateY(-8px) scale(1.03)}
+.gift.locked{
+  filter:grayscale(1);
+  opacity:.6;
+  cursor:not-allowed;
+}
+.gift .icon{
+  font-size:3rem;
+}
+.gift .ribbon{
+  position:absolute;
+  width:100%;
+  height:14px;
+  background:#fff;
+  top:50%;
+  transform:translateY(-50%);
+}
+.gift .ribbon-v{
+  position:absolute;
+  width:14px;
+  height:100%;
+  background:#fff;
+}
+.unlock{
+  font-size:.82rem;
+  margin-top:8px;
+}
+.actions{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-top:45px;
+}
+.btn{
+  border:none;
+  padding:16px 28px;
+  border-radius:999px;
+  background:linear-gradient(90deg,#ff8eb9,#ffc7d7);
+  color:#ffffff;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(255,105,180,.3);
+}
+.modal,.letter-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(10px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  padding:20px;
+}
+.modal-content{
+  max-width:420px;
+  width:100%;
+  animation:pop .4s ease;
+}
+.modal-content img{
+  width:100%;
+  border-radius:24px;
+  object-fit:cover;
+  box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
+@keyframes pop{
+  from{transform:scale(.8);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.close{
+  position:absolute;
+  top:20px;
+  right:20px;
+  background:#fff;
+  color:#ff69b4;
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  border:none;
+  font-size:1.4rem;
+  cursor:pointer;
+}
+.book{
+  width:min(700px,100%);
+  padding:35px;
+  text-align:center;
+}
+.memory-page img{
+  width:100%;
+  max-height:420px;
+  object-fit:cover;
+  border-radius:20px;
+  margin-top:20px;
+}
+.letter{
+  width:min(850px,100%);
+  background:#fff7ef;
+  color:#5b2d4f;
+  padding:40px;
+  border-radius:30px;
+  position:relative;
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+.letter h2{
+  font-family:"Great Vibes",cursive;
+  font-size:3rem;
+  margin-bottom:20px;
+}
+.typewriter{
+  white-space:pre-wrap;
+  line-height:1.9;
+}
+.music{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  z-index:1000;
+}
+.music button{
+  width:65px;
+  height:65px;
+  border:none;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ff87b5,#ffd3e3);
+  color:#ffffff;
+  font-size:1.4rem;
+  cursor:pointer;
+}
+.notification{
+  position:fixed;
+  top:30px;
+  right:-400px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(12px);
+  color:#ffffff;
+  padding:18px 25px;
+  border-radius:20px;
+  z-index:1200;
+  transition:.6s;
+}
+.notification.show{right:20px}
+.celebration{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:888;
+  background:rgba(255,182,193,.15);
+  backdrop-filter:blur(6px);
+  text-align:center;
+}
+.celebration h1{
+  font-family:"Great Vibes",cursive;
+  font-size:clamp(3rem,10vw,7rem);
+}
+.celebration p{
+  max-width:700px;
+  line-height:1.8;
+  margin-top:15px;
+}
+canvas{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
+@media(max-width:700px){
+  .timer{grid-template-columns:repeat(2,1fr)}
+  .countdown{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="bear">🧸</div>
+  <h1>Preparing Your Surprises ❤️</h1>
+</div>
+
+<div class="floating" id="floating"></div>
+
+<div class="notification" id="notify">🎁 A new surprise has arrived ❤️</div>
+
+<div class="celebration" id="celebration">
+  <h1>Happy Birthday My Love ❤️</h1>
+  <p>Every hour brought a memory.<br>Every gift carried a piece of my heart.<br>Today is all about you ❤️</p>
+</div>
+
+<div class="container">
+  <section class="hero">
+    <h1>Simran's Birthday Countdown....</h1>
+    <p>A magical surprise journey made with love ❤️<br><small style="opacity:.9">Timezone: Italy (CEST)</small></p>
+
+    <div class="countdown glass">
+      <div class="timer">
+        <div class="time-box"><h2 id="days">00</h2><span>Days</span></div>
+        <div class="time-box"><h2 id="hours">00</h2><span>Hours</span></div>
+        <div class="time-box"><h2 id="minutes">00</h2><span>Minutes</span></div>
+        <div class="time-box"><h2 id="seconds">00</h2><span>Seconds</span></div>
+      </div>
+
+      <div class="progress-wrap">
+        <h3 id="progressText">Gifts Unlocked: 0 / 24</h3>
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section-title">🎁 Surprise Gifts 🎁</h2>
+
+  <section class="gifts" id="giftGrid"></section>
+
+  <div class="actions">
+    <button class="btn" id="memoryBtn">Memory Book ❤️</button>
+    <button class="btn" id="letterBtn">Final Secret Letter ❤️</button>
+  </div>
+</div>
+
+<div class="modal" id="giftModal">
+  <button class="close" onclick="closeGift()">×</button>
+  <div class="modal-content">
+    <img id="giftImage" alt="memory">
+  </div>
+</div>
+
+<div class="modal" id="memoryModal">
+  <button class="close" onclick="memoryModal.style.display='none'">×</button>
+  <div class="book glass">
+    <h2>Memory Book ❤️</h2>
+    <div class="memory-page" id="memoryPage"></div>
+    <div class="actions">
+      <button class="btn" onclick="prevMemory()">Previous</button>
+      <button class="btn" onclick="nextMemory()">Next</button>
+    </div>
+  </div>
+</div>
+
+<div class="letter-modal" id="letterModal">
+  <button class="close" onclick="letterModal.style.display='none'">×</button>
+  <div class="letter">
+    <h2>My Final Secret Letter ❤️</h2>
+    <div class="typewriter" id="typewriter"></div>
+    <div class="actions">
+      <button class="btn" onclick="startTyping()">Replay Animation</button>
+    </div>
+  </div>
+</div>
+
+<div class="music">
+  <button id="musicBtn">🎵</button>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="Song.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// ================= CONFIG =================
+const START_DATE = "2026-06-03T00:00:00+02:00"; // Italy Timezone (CEST)
+const BIRTHDAY_DATE = "2026-06-04T00:00:00+02:00"; // Italy Timezone (CEST)
+
+const gifts = [
+"Images/The beginning.jpg",
+"Images/things.jpg",
+"Images/Smile.jpg",
+"Images/3rd.jpg",
+"Images/4th.jpg",
+"Images/Auto.jpg",
+"Images/Chocolate.jpg",
+"Images/LovePropose.jpg",
+"Images/Engaged.jpg",
+"Images/Kiss.jpg",
+"Images/Latenight.jpg",
+"Images/letter.jpg",
+"Images/Loyalty.jpg",
+"Images/Memory1.jpg",
+"Images/Memory2.jpg",
+"Images/Tradition.jpg",
+"Images/Teddy.jpg",
+"Images/Playlist.jpg",
+"Images/Poem.jpg",
+"Images/Pure soul.jpg",
+"Images/Ques.jpg",
+"Images/Sleeping.jpg",
+"Images/Stylish.jpg",
+"Images/promise.jpg",
+];
+
+const memories = [
+  {title:"Our Sweet Memory",image:"Images/Latenight.jpg"},
+  {title:"Forever Together",image:"Images/Loyalty.jpg"},
+  {title:"My Favorite Smile",image:"Images/Smile.jpg"}
+];
+
+const secretLetter = `💌✨ Happy Birthday to My Sweetheart, Sweetuuu...., Princess... ✨💌
+
+🎂🌸 Janmadin ki bohot bohot badhiyaaan... 🌸🎂
+
+I am very happy to have you, my Simran... 💖
+I love your presence,,, your smile,,, 😊💕
+I know I hurt you the most.. and also love you the most.. (FROM MY POV)... 🥺❤️
+
+You are like a gem in life... 💎✨
+Jab tumse phli mulakat hui thi toh kabhi nhi socha tha ki tum mere life ka integral part ho... 🌍💞
+
+Today I am very happy but also sad by my behaviour... 😔
+Maine tumhe bohot daanta hai.. and ptaa nhi kitna kuch bola hai... 💔
+But you never responded with me in high tone.. 🥺
+You always talk in smooth and low tone.. 🌸
+You say sorry many times for no reason... 😭💖
+
+Main jb ye sab sochta hu.. toh aisa lgta hai ki our meet may be random , but you are the gift for me from God... 🎁🙏❤️
+And I promise you to always respect and take care of you.. 🤝💞
+
+Your smile is my peace 😊🌷
+And your heart is my favorite home... 🏡❤️
+I will take care of my home... 🫂💖
+
+Can you answer some of my questions...? 🥺✨
+Last me answer dena...
+Are you irritated with these questions....? 😅💭
+
+💌 Questions:
+
+1️⃣ Do you think I (Mr) Love and respect you? ❤️
+2️⃣ Do you think Mr and You trust each other? 🤝💕
+3️⃣ Do we promise our loyalty forever? ♾️💖
+4️⃣ Will you marry Mr S and be Mrs Sharma...? 💍👰❤️
+
+Now answer me the first question what I asked you at first.... 🥺💌
+
+Once again... 🌸
+✨🎂 Happy Birthday my sweet love.... 🎂✨
+May God Bless you always with happiness, peace, and the most beautiful smile... 🙏💖🌍`;
+
+// ================= ELEMENTS =================
+const grid = document.getElementById("giftGrid");
+const progress = document.getElementById("progress");
+const progressText = document.getElementById("progressText");
+const notify = document.getElementById("notify");
+const modal = document.getElementById("giftModal");
+const giftImage = document.getElementById("giftImage");
+const celebration = document.getElementById("celebration");
+const memoryBtn = document.getElementById("memoryBtn");
+const letterBtn = document.getElementById("letterBtn");
+const memoryModal = document.getElementById("memoryModal");
+const letterModal = document.getElementById("letterModal");
+
+let currentMemory = 0;
+
+// ================= FLOATING HEARTS =================
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML=["❤️","✨","🎈","🧸"][Math.floor(Math.random()*4)];
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=(Math.random()*20+18)+"px";
+  heart.style.animationDuration=(Math.random()*8+8)+"s";
+  document.getElementById("floating").appendChild(heart);
+  setTimeout(()=>heart.remove(),16000);
+}
+setInterval(createHeart,500);
+
+// ================= LOADER =================
+window.addEventListener("load",()=>{
+  setTimeout(()=>{
+    loader.style.opacity="0";
+    loader.style.pointerEvents="none";
+  },1800);
+});
+
+// ================= COUNTDOWN =================
+function updateCountdown(){
+  const now = new Date();
+  const target = new Date(BIRTHDAY_DATE);
+  const diff = target - now;
+
+  if(diff <= 0){
+    document.getElementById("days").textContent="00";
+    document.getElementById("hours").textContent="00";
+    document.getElementById("minutes").textContent="00";
+    document.getElementById("seconds").textContent="00";
+    triggerBirthday();
+    return;
+  }
+
+  const d=Math.floor(diff/(1000*60*60*24));
+  const h=Math.floor((diff/(1000*60*60))%24);
+  const m=Math.floor((diff/(1000*60))%60);
+  const s=Math.floor((diff/1000)%60);
+
+  days.textContent=String(d).padStart(2,"0");
+  hours.textContent=String(h).padStart(2,"0");
+  minutes.textContent=String(m).padStart(2,"0");
+  seconds.textContent=String(s).padStart(2,"0");
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+// ================= GIFT SYSTEM =================
+function unlockedCount(){
+  const start = new Date(START_DATE);
+  const now = new Date();
+
+  if(now < start) return 0;
+
+  const diffHours = Math.floor((now - start)/(1000*60*60));
+  return Math.min(diffHours + 1,24);
+}
+
+function renderGifts(){
+  grid.innerHTML="";
+  const count = unlockedCount();
+
+  progress.style.width = (count/24)*100 + "%";
+  progressText.textContent = `Gifts Unlocked: ${count} / 24`;
+
+  [6,12,18,24].forEach(m=>{
+    if(count === m){
+      showNotification(`✨ ${m} Gifts Unlocked Celebration ❤️`);
+    }
+  });
+
+  gifts.forEach((gift,index)=>{
+    const unlocked = index < count;
+
+    const div=document.createElement("div");
+    div.className=`gift ${unlocked ? "" : "locked"}`;
+
+    const unlockTime = new Date(new Date(START_DATE).getTime() + (index*60*60*1000));
+
+    div.innerHTML=`
+      <div class="ribbon"></div>
+      <div class="ribbon-v"></div>
+      <div class="icon">${unlocked ? "🎁":"🔒"}</div>
+      <strong>Gift ${index+1}</strong>
+      <div class="unlock">
+        ${unlocked ? "Unlocked ❤️" : unlockTime.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}
+      </div>
+    `;
+
+    if(unlocked){
+      div.onclick=()=>openGift(gift);
+    }
+
+    grid.appendChild(div);
+  });
+}
+renderGifts();
+setInterval(renderGifts,60000);
+
+// ================= GIFT MODAL =================
+function openGift(src){
+  giftImage.loading="lazy";
+  giftImage.src=src;
+  modal.style.display="flex";
+}
+function closeGift(){
+  modal.style.display="none";
+  giftImage.src="";
+}
+
+// ================= NOTIFICATION =================
+function showNotification(text){
+  notify.textContent=text;
+  notify.classList.add("show");
+  setTimeout(()=>notify.classList.remove("show"),4000);
+}
+
+// ================= MEMORY BOOK =================
+function birthdayUnlocked(){
+  return new Date() >= new Date(BIRTHDAY_DATE);
+}
+
+memoryBtn.addEventListener("click",()=>{
+  if(!birthdayUnlocked()){
+    showNotification("Unlocks On Your Birthday ❤️");
+    return;
+  }
+  renderMemory();
+  memoryModal.style.display="flex";
+});
+
+function renderMemory(){
+  const memory=memories[currentMemory];
+  document.getElementById("memoryPage").innerHTML=`
+    <h3>${memory.title}</h3>
+    <img src="${memory.image}" loading="lazy">
+  `;
+}
+function nextMemory(){
+  currentMemory=(currentMemory+1)%memories.length;
+  renderMemory();
+}
+function prevMemory(){
+  currentMemory=(currentMemory-1+memories.length)%memories.length;
+  renderMemory();
+}
+
+// ================= LETTER =================
+letterBtn.addEventListener("click",()=>{
+  if(!birthdayUnlocked()){
+    showNotification("Unlocks At Midnight ❤️");
+    return;
+  }
+  letterModal.style.display="flex";
+  startTyping();
+});
+
+function startTyping(){
+  const target=document.getElementById("typewriter");
+  target.textContent="";
+  let i=0;
+  const interval=setInterval(()=>{
+    target.textContent += secretLetter.charAt(i);
+    i++;
+    if(i>=secretLetter.length) clearInterval(interval);
+  },28);
+}
+
+// ================= MUSIC =================
+const music=document.getElementById("bgMusic");
+const musicBtn=document.getElementById("musicBtn");
+let playing=false;
+
+musicBtn.onclick=()=>{
+  if(!playing){
+    music.volume=.5;
+    music.play();
+    musicBtn.textContent="⏸";
+  }else{
+    music.pause();
+    musicBtn.textContent="🎵";
+  }
+  playing=!playing;
+};
+
+// ================= BIRTHDAY =================
+let celebrated=false;
+function triggerBirthday(){
+  if(celebrated) return;
+  celebrated=true;
+  celebration.style.display="flex";
+  launchConfetti();
+}
+
+// ================= SIMPLE CONFETTI =================
+function launchConfetti(){
+  for(let i=0;i<120;i++){
+    const conf=document.createElement("div");
+    conf.innerHTML=["✨","🎉","❤️","🎈","🧸"][Math.floor(Math.random()*5)];
+    conf.style.position="fixed";
+    conf.style.left=Math.random()*100+"vw";
+    conf.style.top="-20px";
+    conf.style.fontSize=(Math.random()*20+16)+"px";
+    conf.style.zIndex="9999";
+    conf.style.transition="4s linear";
+    document.body.appendChild(conf);
+
+    setTimeout(()=>{
+      conf.style.transform=`translateY(${window.innerHeight+200}px) rotate(720deg)`;
+    },100);
+
+    setTimeout(()=>conf.remove(),4500);
+  }
+}
+
+// ================= HOURLY CHECK =================
+let previousCount = unlockedCount();
+
+setInterval(()=>{
+  const current = unlockedCount();
+  if(current > previousCount){
+    showNotification("🎁 A new surprise has arrived ❤️");
+    previousCount = current;
+  }
+},30000);
+</script>
+</body>
+</html>
